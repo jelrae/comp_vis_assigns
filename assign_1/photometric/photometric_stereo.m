@@ -10,7 +10,7 @@ image_dir = './SphereGray5/';   % TODO: get the path of the script
 %image_ext = '*.png';
 
 [image_stack, scriptV] = load_syn_images(image_dir);
-[h, w, n] = size(image_stack);
+[h, w, n] = size(image_stack)
 fprintf('Finish loading %d images.\n\n', n);
 
 % compute the surface gradient from the stack of imgs and light source mat
