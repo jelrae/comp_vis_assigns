@@ -6,9 +6,10 @@ function [ p, q, SE ] = check_integrability( normals )
 %   SE : Squared Errors of the 2 second derivatives
 
 % initalization
-p = zeros(size(normals));
-q = zeros(size(normals));
-SE = zeros(size(normals));
+[h, w, n] = size(normals);
+p = zeros(h, w, 1);
+q =  zeros(h, w, 1);
+SE =  zeros(h, w, 1);
 
 % ========================================================================
 % YOUR CODE GOES HERE
@@ -19,7 +20,7 @@ ind_z = 1:n;
 
 % Compute p and q, where
 for x = ind_x
-    for y = ind_y 
+    for y = ind_y
 % p measures value of df / dx
         p(y,x) = normals(y,x,1)/normals(y,x,3);
 % q measures value of df / dy
@@ -34,31 +35,46 @@ q(isnan(q)) = 0;
 % ========================================================================
 % YOUR CODE GOES HERE
 
-for z = ind_z
-    for y = ind_y
-        for x = ind_x
-            % approximate second derivate by neighbor difference
-            if x == 1  
-                p_left = 0;
-                p_right = p(y,x+1,z);
-                q_left = 0;
-                q_right = q(y,x+1,z);
-            elseif x == ind_x(end)
-                p_left =  p(y,x-1,z);
-                p_right = 0;
-                q_left =  q(y,x-1,z);
-                q_right = 0;
-            else
-                p_left = p(y,x-1,z);
-                p_right = p(y,x+1,z);
-                q_left = q(y,x-1,z);
-                q_right = q(y,x+1,z);
-            end
-            % and compute the Squared Errors SE of the 2 second derivatives SE
-            %disp([x,y,z])
-            SE(y,x,z) = (((p_right - p_left)/2) + ((q_right - q_left)/2))^2;
-        end
+for y = ind_y
+    if y == 1
+        p_up = p(y+1,x);
+        p_down = 0;
+        q_up = q(y+1,x);
+        q_down = 0;
+    elseif y == ind_y(end)
+        p_up = 0;
+        p_down = p(y-1,x);
+        q_up = 0;
+        q_down = q(y-1,x);
+    else
+        p_up = p(y+1,x);
+        p_down = p(y-1,x);
+        q_up = q(y+1,x);
+        q_down = q(y-1,x);
     end
+    for x = ind_x
+        % approximate second derivate by neighbor difference
+        if x == 1
+            p_left = 0;
+            p_right = p(y,x+1);
+            q_left = 0;
+            q_right = q(y,x+1);
+        elseif x == ind_x(end)
+            p_left =  p(y,x-1);
+            p_right = 0;
+            q_left =  q(y,x-1);
+            q_right = 0;
+        else
+            p_left = p(y,x-1);
+            p_right = p(y,x+1);
+            q_left = q(y,x-1);
+            q_right = q(y,x+1);
+        end
+        % and compute the Squared Errors SE of the 2 second derivatives SE
+        %disp([x,y,z])
+        SE(y,x) = (((p_right - p_left + p_up - p_down)/4) + ((q_right - q_left + q_up - q_down)/4))^2;
+    end
+end
 
 
 % ========================================================================
