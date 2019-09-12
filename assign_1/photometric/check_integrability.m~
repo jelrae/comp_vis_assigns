@@ -56,7 +56,7 @@ for z = ind_z
             end
             % and compute the Squared Errors SE of the 2 second derivatives SE
             %disp([x,y,z])
-            SE(x,y,z) = (((p_right - p_left)/2) + ((p_right - p_left)/2))^2;
+            SE(x,y,z) = ((p_right - p_left)/2) + ((p_right - p_left)/2))^2
         end
     end
 

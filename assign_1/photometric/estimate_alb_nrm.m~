@@ -9,7 +9,7 @@ function [ albedo, normal ] = estimate_alb_nrm( image_stack, scriptV, shadow_tri
 %   normal : the surface normal
 
 
-[h, w, ~] = size(image_stack);
+[h, w, n] = size(image_stack);
 if nargin == 2
     shadow_trick = true;
 end
@@ -20,22 +20,29 @@ end
 albedo = zeros(h, w, 1);
 normal = zeros(h, w, 3);
 
+
+
 % =========================================================================
 % YOUR CODE GOES HERE
-ind_x = 1:w
-ind_y = 1:
-ind_z = 
+ind_x = 1:w;
+ind_y = 1:h;
+ind_z = 1:n;
 
 % for each point in the image array
-for z in 
-    
+for x = ind_x
+    for y = ind_y 
+        %   stack image values into a vector i
+        i = reshape(image_stack(x,y,:), [5,1]);
+        %   construct the diagonal matrix scriptI
+        scriptI = diag(i);
+        %   solve scriptI * scriptV * g = scriptI * i to obtain g for this point
+        [g,R] = lin(mtimes(scriptI,scriptV),mtimes(scriptI,i));
+        %   albedo at this point is |g|
+        albedo(x,y) = norm(g);
+        %   normal at this point is g / |g|
+        normal(x,y,:) = g/norm(g);
+    end
 end
-%   stack image values into a vector i
-%   construct the diagonal matrix scriptI
-%   solve scriptI * scriptV * g = scriptI * i to obtain g for this point
-%   albedo at this point is |g|
-%   normal at this point is g / |g|
-
 
 
 % =========================================================================
