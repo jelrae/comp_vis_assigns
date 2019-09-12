@@ -15,7 +15,7 @@ fprintf('Finish loading %d images.\n\n', n);
 
 % compute the surface gradient from the stack of imgs and light source mat
 disp('Computing surface albedo and normal map...')
-[albedo, normals] = estimate_alb_nrm(image_stack, scriptV);
+[albedo, normals] = estimate_alb_nrm(image_stack, scriptV, true);
 
 %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
 disp('Integrability checking')
@@ -26,18 +26,24 @@ SE(SE <= threshold) = NaN; % for good visualization
 fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 
 %% compute the surface height
-hei ght_map = construct_surface( p, q );
+height_map = construct_surface( p, q, 'column');
 
 %% Display
 show_results(albedo, normals, SE);
 show_model(albedo, height_map);
+%My shit start
+height_map1 = construct_surface( p, q,'row' );
+show_model(albedo, height_map1);
 
+height_map2 = construct_surface( p, q,'average' );
+show_model(albedo, height_map2);
+%My shit end
 %% Face
 [image_stack, scriptV] = load_face_images('./yaleB02/');
 [h, w, n] = size(image_stack);
 fprintf('Finish loading %d images.\n\n', n);
 disp('Computing surface albedo and normal map...')
-[albedo, normals] = estimate_alb_nrm(image_stack, scriptV);
+[albedo, normals] = estimate_alb_nrm(image_stack, scriptV, false);
 
 %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
 disp('Integrability checking')

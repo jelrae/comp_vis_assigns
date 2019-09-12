@@ -32,11 +32,15 @@ ind_z = 1:n;
 for x = ind_x
     for y = ind_y 
         %   stack image values into a vector i
-        i = reshape(image_stack(y,x,:), [5,1]);
+        i = reshape(image_stack(y,x,:), [n,1]);
         %   construct the diagonal matrix scriptI
         scriptI = diag(i);
         %   solve scriptI * scriptV * g = scriptI * i to obtain g for this point
-        [g,R] = linsolve(mtimes(scriptI,scriptV),mtimes(scriptI,i));
+        if shadow_trick
+            [g,R] = linsolve(mtimes(scriptI,scriptV),mtimes(scriptI,i));
+        else
+            [g,R] = linsolve(scriptV,i);
+        end
         %   albedo at this point is |g|
         albedo(y,x) = norm(g);
         %   normal at this point is g / |g|

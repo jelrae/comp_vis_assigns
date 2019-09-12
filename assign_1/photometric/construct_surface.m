@@ -26,7 +26,7 @@ switch path_type
         %   for each element of the row except for leftmost
         %       height_value = previous_height_value + corresponding_p_value
         
-        first_col_height = 0;
+        first_col_height = 0; % should this be 0 or 1
         for y = 2:h
             first_col_height = first_col_height + q(y, 1);
             height_map(y, 1) = first_col_height;
@@ -45,7 +45,7 @@ switch path_type
         
         % =================================================================
         % YOUR CODE GOES HERE
-        first_row_height = 0;
+        first_row_height = 0;  % should this be 0 or 1
         for x = 2:w
             first_row_height = first_row_height + p(1, x);
             height_map(1, x) = first_row_height;
