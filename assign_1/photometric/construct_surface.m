@@ -26,15 +26,36 @@ switch path_type
         %   for each element of the row except for leftmost
         %       height_value = previous_height_value + corresponding_p_value
         
-
+        first_col_height = 0;
+        for y = 2:h
+            first_col_height = first_col_height + q(y, 1);
+            height_map(y, 1) = first_col_height;
+            
+            row_height = first_col_height;
+            for x = 2:w
+                row_height = row_height + p(y, x);
+                height_map(y, x) = row_height;
+            end
+        end
        
         % =================================================================
+        
                
     case 'row'
         
         % =================================================================
         % YOUR CODE GOES HERE
-        
+        first_row_height = 0;
+        for x = 2:w
+            first_row_height = first_row_height + p(1, x);
+            height_map(1, x) = first_row_height;
+            
+            col_height = first_row_height;
+            for y = 2:h
+                col_height = col_height + q(y, x);
+                height_map(y, x) = col_height;
+            end
+        end
 
         % =================================================================
           
@@ -43,10 +64,11 @@ switch path_type
         % =================================================================
         % YOUR CODE GOES HERE
 
-        
+        col_first = construct_surface(p, q, 'col');
+        row_first = construct_surface(p, q, 'row');
+        height_map = (col_first + row_first) / 2;
         % =================================================================
 end
-
 
 end
 
