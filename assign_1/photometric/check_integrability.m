@@ -21,9 +21,9 @@ ind_z = 1:n;
 for x = ind_x
     for y = ind_y 
 % p measures value of df / dx
-        p(x,y) = normals(x,y,1)/normals(x,y,3);
+        p(y,x) = normals(y,x,1)/normals(y,x,3);
 % q measures value of df / dy
-        q(x,y) = normals(x,y,2)/normals(x,y,3);
+        q(y,x) = normals(y,x,2)/normals(y,x,3);
     end
 end
 % ========================================================================
@@ -40,23 +40,23 @@ for z = ind_z
             % approximate second derivate by neighbor difference
             if x == 1  
                 p_left = 0;
-                p_right = p(x+1,y,z);
+                p_right = p(y,x+1,z);
                 q_left = 0;
-                q_right = q(x+1,y,z);
+                q_right = q(y,x+1,z);
             elseif x == ind_x(end)
-                p_left =  p(x-1,y,z);
+                p_left =  p(y,x-1,z);
                 p_right = 0;
-                q_left =  q(x-1,y,z);
+                q_left =  q(y,x-1,z);
                 q_right = 0;
             else
-                p_left = p(x-1,y,z);
-                p_right = p(x+1,y,z);
-                q_left = q(x-1,y,z);
-                q_right = q(x+1,y,z);
+                p_left = p(y,x-1,z);
+                p_right = p(y,x+1,z);
+                q_left = q(y,x-1,z);
+                q_right = q(y,x+1,z);
             end
             % and compute the Squared Errors SE of the 2 second derivatives SE
             %disp([x,y,z])
-            SE(x,y,z) = (((p_right - p_left)/2) + ((p_right - p_left)/2))^2;
+            SE(y,x,z) = (((p_right - p_left)/2) + ((q_right - q_left)/2))^2;
         end
     end
 

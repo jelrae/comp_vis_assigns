@@ -32,15 +32,15 @@ ind_z = 1:n;
 for x = ind_x
     for y = ind_y 
         %   stack image values into a vector i
-        i = reshape(image_stack(x,y,:), [5,1]);
+        i = reshape(image_stack(y,x,:), [5,1]);
         %   construct the diagonal matrix scriptI
         scriptI = diag(i);
         %   solve scriptI * scriptV * g = scriptI * i to obtain g for this point
         [g,R] = linsolve(mtimes(scriptI,scriptV),mtimes(scriptI,i));
         %   albedo at this point is |g|
-        albedo(x,y) = norm(g);
+        albedo(y,x) = norm(g);
         %   normal at this point is g / |g|
-        normal(x,y,:) = g/norm(g);
+        normal(y,x,:) = g/norm(g);
     end
 end
 

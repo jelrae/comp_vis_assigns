@@ -22,7 +22,7 @@ disp('Computing surface albedo and normal map...')
 disp('Integrability checking')
 [p, q, SE] = check_integrability(normals);
 
-threshold = 0.005;
+threshold = 0.05;
 SE(SE <= threshold) = NaN; % for good visualization
 fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 
@@ -45,7 +45,7 @@ disp('Computing surface albedo and normal map...')
 disp('Integrability checking')
 [p, q, SE] = check_integrability(normals);
 
-threshold = 0.005;
+threshold = 0.05;
 SE(SE <= threshold) = NaN; % for good visualization
 fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
 
