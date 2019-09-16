@@ -1,4 +1,4 @@
-zfunction show_results( albedo, normals, SE )
+function show_results( albedo, normals, SE )
 %SHOW_RESULTS display albedo, normal and computational errors
 
 [h, w, ~] = size(normals);

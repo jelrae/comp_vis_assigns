@@ -8,8 +8,7 @@ disp('Part 1: Photometric Stereo')
 disp('Loading images...')
 figure
 plot_num = 1
-for i = 5
-% for i = 5:4:25
+for i = 5:4:25
     image_dir = strcat('./SphereGray',int2str(i),'/');
     % TODO: get the path of the script
     %image_ext = '*.png';
@@ -25,26 +24,32 @@ for i = 5
     disp('Computing surface albedo and normal map...')
     [albedo, normals] = estimate_alb_nrm(image_stack, scriptV, false);
 
-    %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
-    disp('Integrability checking')
-    [p, q, SE] = check_integrability(normals);
-
-    threshold = 0.05;
-    SE(SE <= threshold) = NaN; % for good visualization
-    fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
-
-    %% compute the surface height
-    height_map = construct_surface( p, q, 'column');
+%     %% integrability check: is (dp / dy  -  dq / dx) ^ 2 small everywhere?
+%     disp('Integrability checking')
+%     [p, q, SE] = check_integrability(normals);
+% 
+%     threshold = 0.05;
+%     SE(SE <= threshold) = NaN; % for good visualization
+%     fprintf('Number of outliers: %d\n\n', sum(sum(SE > threshold)));
+% 
+%     %% compute the surface height
+%     height_map = construct_surface( p, q, 'column');
 
     %% Display
+    minN = min(min(normals, [], 1), [], 2);
+    maxN = max(max(normals, [], 1), [], 2);
+    normal_img = (normals - minN) ./ (maxN - minN);
+    % NOTE: all 3 operations(-, /, -) are done in in broadcasting manner
+    % before MATLAB2016B, must use BSXFUN(@minus, normals, minN), ...
+    subplot(1, 6, plot_num);
+    imshow(normal_img);
 
-%     subplot(1, 6, plot_num);
 %     imshow(albedo);
-%     title_str = strcat(int2str(i),' Images Used');
-%     title(title_str);
-%     plot_num = plot_num + 1
-    show_results(albedo, normals, SE);
-    show_model(albedo, height_map);
+    title_str = strcat(int2str(i),' Images Used');
+    title(title_str);
+    plot_num = plot_num + 1
+%     show_results(albedo, normals, SE);
+%     show_model(albedo, height_map);
 %     %My shit start
 %     height_map1 = construct_surface( p, q,'row' );
 %     show_model(albedo, height_map1);
