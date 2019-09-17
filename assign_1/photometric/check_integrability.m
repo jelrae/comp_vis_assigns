@@ -72,7 +72,7 @@ for y = ind_y
         end
         % and compute the Squared Errors SE of the 2 second derivatives SE
         %disp([x,y,z])
-        SE(y,x) = (((p_right - p_left + p_up - p_down)/4) + ((q_right - q_left + q_up - q_down)/4))^2;
+        SE(y,x) = (((p_right - p_left + p_up - p_down)) + ((q_right - q_left + q_up - q_down)))^2; %maybe divide them by 2?
     end
 end
 

@@ -6,7 +6,8 @@ disp('Part 1: Photometric Stereo')
 
 % obtain many images in a fixed view under different illumination
 disp('Loading images...')
-image_dir = './SphereGray25/';   % TODO: get the path of the script
+%image_dir = './MonkeyGray/';   % TODO: get the path of the script
+image_dir = './SphereGray/';
 %image_ext = '*.png';
 
 [image_stack, scriptV] = load_syn_images(image_dir);

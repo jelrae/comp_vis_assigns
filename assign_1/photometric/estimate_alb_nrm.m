@@ -32,11 +32,11 @@ ind_z = 1:n;
 for x = ind_x
     for y = ind_y 
         %   stack image values into a vector i
-        i = squeeze(image_stack(y,x,:));
+        i = squeeze(double(image_stack(y,x,:)));
         %   construct the diagonal matrix scriptI
         scriptI = diag(i);
         %   solve scriptI * scriptV * g = scriptI * i to obtain g for this point
-        if shadow_trick
+        if shadow_trick == 1
             %[g,R] = linsolve(mtimes(scriptI,scriptV),mtimes(scriptI,i));
             [g,R] = linsolve(scriptI*scriptV,scriptI*i);
         else
