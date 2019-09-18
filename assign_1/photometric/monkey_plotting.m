@@ -8,6 +8,7 @@ disp('Part 1: Photometric Stereo')
 disp('Loading images...')
 
 % cycle through the foulders created for sampling different sizes
+%for i = 41:20:121
 for i = 41:40:121
     image_dir = strcat('./MonkeyGray',int2str(i),'/');
     % TODO: get the path of the script
