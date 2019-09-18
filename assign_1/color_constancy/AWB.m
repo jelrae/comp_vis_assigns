@@ -1,48 +1,23 @@
-function [new_image] = GreyWorld(input_image)
+%% Read the image and have RGB channels separated
+clear;
+I = imread('bluesky.jpg');
+R = I(:,:,1); % Red
+G = I(:,:,2); % Green
+B = I(:,:,3); % Blue
 
-% first we extract the R, G and B channels of the input image
-R = input_image(:,:,1);
-G = input_image(:,:,2);
-B = input_image(:,:,3);
+%% Then we scale each channel by mean_grey / mean_channel
+% note that we can assume mean grey to be 128 or take global avg
+mean_grey = mean(I, "ALL");
+% disp(mean_grey)
+% mean_grey = 128;
+R_new =  (mean_grey / mean(R, "ALL") ) * R;
+G_new =  (mean_grey/ mean(G, "ALL") ) * G;
+B_new =  (mean_grey / mean(B, "ALL") ) * B;
 
-% now we compute the average value per independent color channel (Von Kries correction), and the average color
-% over all channels
-Rmean = mean(mean(R));
-Bmean = mean(mean(B));
-Gmean = mean(mean(G));
-
-Colormean = ( Rmean + Bmean + Gmean ) ./ 3;
-
-% In order to convert the input image with GreyWorld, we need to calculate
-% the scaling values for each color channel
-
-Rscale = Colormean ./ Rmean;
-Gscale = Colormean ./ Gmean;
-Bscale = Colormean ./ Bmean;
-
-% store a copy of the input image to perform manipulations
-new_image = input_image;
-
-% superimposing the scaling factors on their respective color channels on the
-% new image
-new_image(:,:,1) = Rscale .* new_image(:,:,1);
-new_image(:,:,2) = Gscale .* new_image(:,:,2);
-new_image(:,:,3) = Bscale .* new_image(:,:,3);
-
-imshow(new_image);
-
-
-
-
-
-
-
-
-
-
-
-
-
+%% concat new image and show in pair
+new_I = cat(3, R_new, G_new, B_new);
+figure, subplot(121), imshow(I), title("original image");
+subplot(122), imshow(new_I), title("white balanced image");
 
 
 
