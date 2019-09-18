@@ -1,6 +1,6 @@
 %% Read the image and have RGB channels separated
 clear;
-I = imread('bluesky.jpg');
+I = imread('awb.jpg');
 R = I(:,:,1); % Red
 G = I(:,:,2); % Green
 B = I(:,:,3); % Blue
