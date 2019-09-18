@@ -1,3 +1,6 @@
+clc;
+clear;
+
 albedo_img_path = "ball_albedo.png";
 shading_img_path = "ball_shading.png";
 reconstructed = iid_image_formation(albedo_img_path, shading_img_path);
@@ -17,7 +20,7 @@ subplot(232);
 imshow("ball_shading.png");
 title("shading");
 subplot(233);
-imshow(reconstructed_img);
+imshow(reconstructed);
 title("reconstructed");
 
 subplot(234);
