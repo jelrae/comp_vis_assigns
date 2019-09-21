@@ -1,3 +1,6 @@
+clc;
+clear;
+close all;
 %% Hyperparameters
 k        = 2;      % number of clusters in k-means algorithm. By default, 
                    % we consider k to be 2 in foreground-background segmentation task.
@@ -133,8 +136,9 @@ fprintf('--------------------------------------\n')
 %            explain what works better and why shortly in the report.
 featureMaps = cell(length(gaborFilterBank),1);
 for jj = 1 : length(gaborFilterBank)
-    real_out =  % \\TODO: filter the grayscale input with real part of the Gabor
-    imag_out =  % \\TODO: filter the grayscale input with imaginary part of the Gabor
+    img_gray = im2double(img_gray);
+    real_out = imfilter(img_gray, gaborFilterBank(jj).filterPairs(:,:,1), 'replicate', "conv");% \\TODO: filter the grayscale input with real part of the Gabor
+    imag_out = imfilter(img_gray, gaborFilterBank(jj).filterPairs(:,:,2), 'replicate', "conv"); % \\TODO: filter the grayscale input with imaginary part of the Gabor
     featureMaps{jj} = cat(3, real_out, imag_out);
     
     % Visualize the filter responses if you wish.
@@ -158,7 +162,7 @@ featureMags =  cell(length(gaborFilterBank),1);
 for jj = 1:length(featureMaps)
     real_part = featureMaps{jj}(:,:,1);
     imag_part = featureMaps{jj}(:,:,2);
-    featureMags{jj} = % \\TODO: Compute the magnitude here
+    featureMags{jj} =sqrt(real_part.^2 + imag_part.^2); % \\TODO: Compute the magnitude here
     
     % Visualize the magnitude response if you wish.
     if visFlag
@@ -183,6 +187,10 @@ end
 % \\ Hint: doc imfilter, doc fspecial or doc imgaussfilt.  
 features = zeros(numRows, numCols, length(featureMags));
 if smoothingFlag
+    for jj = 1:length(featureMags)
+        featureMags{jj} = imgaussfilt(featureMags{jj},0.5);
+        features(:,:,jj) = featureMags{jj};
+    end
     % \\TODO:
     %FOR_LOOP
         % i)  filter the magnitude response with appropriate Gaussian kernels
@@ -207,27 +215,33 @@ features = reshape(features, numRows * numCols, []);
 % Standardize features. 
 % \\ Hint: see http://ufldl.stanford.edu/wiki/index.php/Data_Preprocessing
 %          for more information. \\
+features = zscore(features);
+%numFilters = length(gaborFilterBank);
+%mean = sum(features,'all')/(numRows * numCols * numFilters);
+%sigma = sqrt(sum((features - mean).^2,'all')/(numRows * numCols * numFilters));
+%features = (features - mean)/sigma;
 
-features = % \\ TODO: i)  Implement standardization on matrix called features. 
+
+%features = % \\ TODO: i)  Implement standardization on matrix called features.
            %          ii) Return the standardized data matrix.
 
 
-% (Optional) Visualize the saliency map using the first principal component 
-% of the features matrix. It will be useful to diagnose possible problems 
-% with the pipeline and filterbank.  
+% (Optional) Visualize the saliency map using the first principal component
+% of the features matrix. It will be useful to diagnose possible problems
+% with the pipeline and filterbank.
 coeff = pca(features);
 feature2DImage = reshape(features*coeff(:,1),numRows,numCols);
 figure(4)
-imshow(feature2DImage,[]), title('Pixel representation projected onto first PC')
+imshow(feature2DImage,[]), title('Pixel representation projected onto first PC');
 
 
 % Apply k-means algorithm to cluster pixels using the data matrix,
-% features. 
-% \\ Hint-1: doc kmeans 
+% features.
+% \\ Hint-1: doc kmeans
 % \\ Hint-2: use the parameter k defined in the first section when calling
 %            MATLAB's built-in kmeans function.
 tic
-pixLabels = % \\TODO: Return cluster labels per pixel
+pixLabels = kmeans(features, k);% \\TODO: Return cluster labels per pixel
 ctime = toc;
 fprintf('Clustering completed in %.3f seconds.\n', ctime);
 
@@ -249,7 +263,7 @@ BW = pixLabels == 2;
 BW = repmat(BW,[1 1 3]);
 Aseg1(BW) = img(BW);
 Aseg2(~BW) = img(~BW);
-figure(6)
+figure(6), title("pixel segmentation");
 imshowpair(Aseg1,Aseg2,'montage')
 
 

@@ -78,6 +78,7 @@ function rotMat = generateRotationMatrix(theta)
 % Returns the rotation matrix. 
 % \\ Hint: https://en.wikipedia.org/wiki/Rotation_matrix \\
 rotMat = [cos(theta), sin(theta); -sin(theta), cos(theta)]; % \\TODO: code the rotation matrix given theta.
+rotMat = [cos(theta), -sin(theta); sin(theta), cos(theta)]; % from vincent
 end
 
 % ----------------------------------------------------------
@@ -104,7 +105,7 @@ end
 function gaussEnv = createGauss(rot_x, rot_y, gamma, sigma)
 % ----------------------------------------------------------
 % Returns the 2D Gaussian Envelope. 
-gaussEnv = exp(rot_x.^2 + gamma^2*rot_y.^2)/(-2*sigma^2);% \\TODO: Implement the Gaussian envelope.
+gaussEnv = exp((rot_x.^2 + gamma^2*rot_y.^2)/(-2*sigma^2));% \\TODO: Implement the Gaussian envelope.
 
 % Reshape the vector representation to matrix.
 gaussEnv = reshape(gaussEnv, sqrt(length(gaussEnv)), []);
