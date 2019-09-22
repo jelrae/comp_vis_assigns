@@ -188,7 +188,8 @@ end
 features = zeros(numRows, numCols, length(featureMags));
 if smoothingFlag
     for jj = 1:length(featureMags)
-        featureMags{jj} = imgaussfilt(featureMags{jj},0.5);
+        % Tested diiferent kernel sizes, but it doesn't affect much.
+        featureMags{jj} = imgaussfilt(featureMags{jj},gaborFilterBank(jj).sigma); 
         features(:,:,jj) = featureMags{jj};
     end
     % \\TODO:
@@ -215,7 +216,10 @@ features = reshape(features, numRows * numCols, []);
 % Standardize features. 
 % \\ Hint: see http://ufldl.stanford.edu/wiki/index.php/Data_Preprocessing
 %          for more information. \\
-features = zscore(features);
+% standardize among filters for each pixel
+features = zscore(features); 
+
+% \\ hand-coded normalization among all matrix, results don't seem good. \\
 %numFilters = length(gaborFilterBank);
 %mean = sum(features,'all')/(numRows * numCols * numFilters);
 %sigma = sqrt(sum((features - mean).^2,'all')/(numRows * numCols * numFilters));
