@@ -1,10 +1,11 @@
+
 function PSNR = myPSNR(orig_image , approx_image) 
 
-original_img = imread(orig_image); 
-enhanced_img = imread(approx_image);
+% original_img = imread(orig_image); 
+% enhanced_img = imread(approx_image);
 
-original_img = im2double(original_img);
-enhanced_img = im2double(enhanced_img);
+original_img = im2double(orig_image);
+enhanced_img = im2double(approx_image);
 
 %% MSE Section: computing error per pixel
 sum_vec = [];
@@ -25,10 +26,13 @@ sum_of_errors = sum(sum_vec);
 MSE = sum_of_errors ./ (h .* w);
 %computing the Mean Squared Error
 
+sum_vec = [];
+
 %% PSNR section
 Imax = max(max(original_img));
 % obtain maximum pixel value Imax in original image
 fraction = (Imax / sqrt(MSE));
+MSE = 0;
 
 PSNR = 20  .* log10(fraction)
 
@@ -44,4 +48,3 @@ PSNR = 20  .* log10(fraction)
 %    20.5835
 
 end
-
