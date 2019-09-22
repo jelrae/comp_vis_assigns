@@ -4,7 +4,7 @@ close all;
 %% Hyperparameters
 k        = 2;      % number of clusters in k-means algorithm. By default, 
                    % we consider k to be 2 in foreground-background segmentation task.
-image_id = 'Kobi'; % Identifier to switch between input images.
+image_id = 'SciencePark'; % Identifier to switch between input images.
                    % Possible ids: 'Kobi',    'Polar', 'Robin-1'
                    %               'Robin-2', 'Cows', 'SciencePark'
 
@@ -217,13 +217,12 @@ features = reshape(features, numRows * numCols, []);
 % \\ Hint: see http://ufldl.stanford.edu/wiki/index.php/Data_Preprocessing
 %          for more information. \\
 % standardize among filters for each pixel
-features = zscore(features); 
+%features = zscore(features); 
 
-% \\ hand-coded normalization among all matrix, results don't seem good. \\
-%numFilters = length(gaborFilterBank);
-%mean = sum(features,'all')/(numRows * numCols * numFilters);
-%sigma = sqrt(sum((features - mean).^2,'all')/(numRows * numCols * numFilters));
-%features = (features - mean)/sigma;
+numFilters = length(gaborFilterBank);
+mean = sum(features,1)/(numRows * numCols);
+sigma = sqrt(sum((features - mean).^2,1)/(numRows * numCols));
+features = (features - mean)/sigma;
 
 
 %features = % \\ TODO: i)  Implement standardization on matrix called features.
