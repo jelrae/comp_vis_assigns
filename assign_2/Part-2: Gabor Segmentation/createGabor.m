@@ -1,4 +1,4 @@
-function [ myGabor ] = createGabor( sigma, theta, lambda, psi, gamma )
+function [ myGabor, x, y ] = createGabor( sigma, theta, lambda, psi, gamma )
 %CREATEGABOR Creates a complex valued Gabor filter.
 %   myGabor = createGabor( sigma, theta, lambda, psi, gamma ) generates
 %   Gabor kernels.  
@@ -34,7 +34,8 @@ xmin = -xmax; ymin = -ymax;
 
 % Generate a coordinate system in the range [xmin,xmax] and [ymin, ymax]. 
 [x,y] = meshgrid(xmin:xmax,ymin:ymax);
-
+% more fine grained grid
+[x,y] = meshgrid(xmin:0.1:xmax,ymin:0.1:ymax);
 % Convert to a 2-by-N matrix where N is the number of pixels in the kernel.
 XY = [reshape(x, 1, []);reshape(y, 1, [])];
 
