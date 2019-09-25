@@ -1,4 +1,5 @@
-function apply_filter(I, h)
+% Apply a 2d filter to test time
+function apply_filter_2D(I, h)
     padded = zeros(size(I)+2);
     padded(2:end-1,2:end-1) = I;
     output = zeros(size(I));
@@ -13,18 +14,4 @@ function apply_filter(I, h)
         end
     end
     toc
-%     if convol:
-%         for r in 1:1:rw:
-%             for c in 1:1:col:
-%                 
-%             end
-%         end
-%     else 
-%         
-%         for r in rw:-1:1:
-%             for c in col:-1:1:
-%                 
-%             end
-%         end
-%     end
 end
