@@ -76,84 +76,24 @@ title('gaussian noise, 7*7 median filter')
 % Report the results in a table and discuss.
 saltpepper_img = imread("image1_saltpepper.jpg");
 gaussian_img = imread("image1_gaussian.jpg");
+original_img = imread("image1.jpg");
 
 % % compute PSNR for saltpepper noise treated with box filters
-psnr_bf_33_sp = myPSNR(saltpepper_img, bf_33_sp);
-psnr_bf_55_sp = myPSNR(saltpepper_img, bf_55_sp);
-psnr_bf_77_sp = myPSNR(saltpepper_img, bf_77_sp);
+psnr_bf_33_sp = myPSNR(original_img, bf_33_sp);
+psnr_bf_55_sp = myPSNR(original_img, bf_55_sp);
+psnr_bf_77_sp = myPSNR(original_img, bf_77_sp);
 
 % % compute PSNR for saltpepper noise treated with median filters
-psnr_med_33_sp = myPSNR(saltpepper_img, med_33_sp);
-psnr_med_55_sp = myPSNR(saltpepper_img, med_55_sp);
-psnr_med_77_sp = myPSNR(saltpepper_img, med_77_sp);
+psnr_med_33_sp = myPSNR(original_img, med_33_sp);
+psnr_med_55_sp = myPSNR(original_img, med_55_sp);
+psnr_med_77_sp = myPSNR(original_img, med_77_sp);
 
 % % compute PSNR for gaussian noise treated with box filters
-psnr_bf_33_gauss = myPSNR(gaussian_img, bf_33_gauss);
-psnr_bf_55_gauss = myPSNR(gaussian_img, bf_55_gauss);
-psnr_bf_77_gauss = myPSNR(gaussian_img, bf_77_gauss);
+psnr_bf_33_gauss = myPSNR(original_img, bf_33_gauss);
+psnr_bf_55_gauss = myPSNR(original_img, bf_55_gauss);
+psnr_bf_77_gauss = myPSNR(original_img, bf_77_gauss);
 
 % % compute PSNR for gaussian noise treated with median filters
-psnr_med_33_gauss = myPSNR(gaussian_img, med_33_gauss);
-psnr_med_55_gauss = myPSNR(gaussian_img, med_55_gauss);
-psnr_med_77_gauss = myPSNR(gaussian_img, med_77_gauss);
-
-% >> q7_1
-% 
-% PSNR =
-% 
-%    16.4394
-% 
-% 
-% PSNR =
-% 
-%    15.7926
-% 
-% 
-% PSNR =
-% 
-%    15.4254
-% 
-% 
-% PSNR =
-% 
-%    20.3716
-% 
-% 
-% PSNR =
-% 
-%    19.1919
-% 
-% 
-% PSNR =
-% 
-%    18.4129
-% 
-% 
-% PSNR =
-% 
-%    16.1201
-% 
-% 
-% PSNR =
-% 
-%    15.7417
-% 
-% 
-% PSNR =
-% 
-%    15.4046
-% 
-% 
-% PSNR =
-% 
-%    20.2763
-% 
-% 
-% PSNR =
-% 
-%    19.2558
-% 
-% 
-% PSNR =
-% 
-%    18.4619
+psnr_med_33_gauss = myPSNR(original_img, med_33_gauss);
+psnr_med_55_gauss = myPSNR(original_img, med_55_gauss);
+psnr_med_77_gauss = myPSNR(original_img, med_77_gauss);
