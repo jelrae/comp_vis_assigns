@@ -1,0 +1,8 @@
+function flow =  opticFlow(image1, image2, sects = 15)
+    % get the image size and resize to the new size
+    [h,w] = size(image1);
+    h_adjest = floor(h/sects)*sects;
+    w_adjusts = floor(w/sects)*sects;
+    
+    % Resize the image into 
+end
