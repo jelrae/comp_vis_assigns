@@ -13,6 +13,7 @@ function flow =  opticFlow(im1, im2, sects)
     offset_h = floor((h-h_adjust)/2);
     offset_w = floor((w-w_adjust)/2);
     
+    %Offset to just loose the sides than the full bit
 %     im1 = im1(offset_h:h_adjust+offset_h-1, offset_w:w_adjust+offset_w-1);
 %     im2 = im2(offset_h:h_adjust+offset_h-1, offset_w:w_adjust+offset_w-1);
     
@@ -38,13 +39,25 @@ function flow =  opticFlow(im1, im2, sects)
     %Make Ix and Iy
     dx = [1 0 -1; 1 0 -1; 1 0 -1];
     dy = dx';
+    
+    % Attempt 1
     Iy = conv2(im1, dy, 'same');
     Ix = conv2(im1, dx, 'same');
     Ix = reshape(Ix,sects,sects,[]);
     Iy = reshape(Iy,sects,sects,[]);
+     
+
+%     %Attempt 2 works even less
+%     Ix = zeros(size(window1));
+%     Iy = zeros(size(window1));
+% 
+%     for z = 1:1:size(window1,3)
+%         Ix(:,:,z) = conv2(window1(:,:,z), dx, 'same');
+%         Iy(:,:,z) = conv2(window1(:,:,z), dy, 'same');
+%     end
     
     Ix = reshape(Ix,[],1,size(Ix,3));
-    Iy = reshape(Iy,[],1,size(Iy,3));
+    Iy = reshape(Iy,[],1,size(Iy,3));    
     
     A = [Ix, Iy];
     
