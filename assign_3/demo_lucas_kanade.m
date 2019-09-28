@@ -2,15 +2,21 @@ function demo_lucas_kanade()
     i1 = im2double(rgb2gray(imread('sphere1.ppm')));
     i2 = im2double(rgb2gray(imread('sphere2.ppm')));
     
-    flow = lucas_kanade(i1,i2);
+    sects = 15;
+    flow = lucas_kanade(i1,i2,sects);
     flow = flow';
-    
+
     [h, w] = size(i1);
 
-    h_fixed = floor(h / 15) * 15;
-    w_fixed = floor(w / 15) * 15;
+    num_instances = floor(h / sects)^2;
+    h_ad = (floor(h/sects)*sects);
+    w_ad = (floor(w/sects)*sects);
+    
+%     quiver((1:1:num_instances)',(1:1:num_instances)', flow(:,1), flow(:,2))
+    
+    %Friends code
 
-    [x, y] = meshgrid(8:15:w_fixed, 8:15:h_fixed);
+    [x, y] = meshgrid(8:15:w_ad, 8:15:h_ad);
 
     imagesc(unique(x), unique(y), i1);
     hold on;

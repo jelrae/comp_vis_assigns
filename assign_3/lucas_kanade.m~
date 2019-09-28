@@ -16,8 +16,8 @@ function flow =  opticFlow(im1, im2, sects)
 %     im1 = im1(offset_h:h_adjust+offset_h-1, offset_w:w_adjust+offset_w-1);
 %     im2 = im2(offset_h:h_adjust+offset_h-1, offset_w:w_adjust+offset_w-1);
     
-    im1 = im1(1:h_adjust, 1:w_adjust);
-    im2 = im2(1:h_adjust, 1:w_adjust);
+    im1 = im1(1:h_adjust+offset_h-1, offset_w:w_adjust+offset_w-1);
+    im2 = im2(offset_h:h_adjust+offset_h-1, offset_w:w_adjust+offset_w-1);
     
     
     %Pad the matrix
