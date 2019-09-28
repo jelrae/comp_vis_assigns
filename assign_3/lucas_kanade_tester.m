@@ -1,8 +1,8 @@
-function flow =  opticFlow(im1, im2, sects)
+function lucas_kanade_tester()
     
-    if nargin == 2
-        sects = 15;
-    end
+    im1 = im2double(rgb2gray(imread('sphere1.ppm')));
+    im2 = im2double(rgb2gray(imread('sphere2.ppm')));
+    sects = 15;
     
     % get the image size and new sizes
     [h,w] = size(im1);
@@ -33,7 +33,7 @@ function flow =  opticFlow(im1, im2, sects)
     
     %Make Ix and Iy
     
-    Iy = conv2(im1, [-1;0;1], 'same');
+    Iy = conv2(im1, [1;0;-1], 'same');
     Ix = conv2(im1, [1,0,-1], 'same');
     Ix = reshape(Ix,sects,sects,[]);
     Iy = reshape(Iy,sects,sects,[]);
@@ -45,7 +45,7 @@ function flow =  opticFlow(im1, im2, sects)
     %Make I_t
     %Make into vectors
     array1 = reshape(window1,[],1,size(window1,3));
-    array2 = reshape(window2,[],1,size(window2,3));
+    array2 = reshape(window2,[],1,size(window2,3))
     b = -1.*(array2-array1);
     
     %Find the Flow
@@ -55,5 +55,6 @@ function flow =  opticFlow(im1, im2, sects)
     for z = 1:1:size(A,3)
         flow(:,z) = inv(A(:,:,z)'*A(:,:,z))*A(:,:,z)'*b(:,:,z);
     end
+
     
 end
