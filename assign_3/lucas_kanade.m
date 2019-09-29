@@ -20,22 +20,22 @@ function flow =  opticFlow(im1, im2, sects)
     w1 = mat2cell(im1, repelem(sects, h_adjust/sects), repelem(sects, w_adjust/sects));
     w2 = mat2cell(im2, repelem(sects, h_adjust/sects), repelem(sects, w_adjust/sects));
     
-    a1 = cellfun(@(w1) reshape(w1',[],1), w1, 'UniformOutput', false);
-    a2 = cellfun(@(w2) reshape(w2',[],1), w2, 'UniformOutput', false);
+    a1 = cellfun(@(w1) reshape(w1.',[],1), w1, 'UniformOutput', false);
+    a2 = cellfun(@(w2) reshape(w2.',[],1), w2, 'UniformOutput', false);
     
     b = cellfun(@(a2,a1) a2-a1, a2, a1, 'UniformOutput', false);
     
     % get the derivaties
-    [wgradx, wgrady] = cellfun(@imgradient, w1, 'UniformOutput', false);
+    [wgradx, wgrady] = cellfun(@(w1) imgradientxy(w1), w1, 'UniformOutput', false);
     
-    wgradx = cellfun(@(wgradx) reshape(wgradx',[],1), wgradx, 'UniformOutput', false);
-    wgrady = cellfun(@(wgrady) reshape(wgrady',[],1), wgrady, 'UniformOutput', false);
+    wgradx = cellfun(@(wgradx) reshape(wgradx.',[],1), wgradx, 'UniformOutput', false);
+    wgrady = cellfun(@(wgrady) reshape(wgrady.',[],1), wgrady, 'UniformOutput', false);
     
     %Construct A
-    A = cellfun(@(wgradx,wgrady) [wgradx, wgradx], wgradx, wgrady, 'UniformOutput', false);
-    
+    A = cellfun(@(wgradx,wgrady) [wgradx, wgrady], wgradx, wgrady, 'UniformOutput', false);
+    A;
     %Solve system of equations
-    flow = cellfun(@(A,b) inv(A'*A)*A'*-b, A, b, 'UniformOutput', false);
+    flow = cellfun(@(A,b) inv(A.'*A)*A.'*-b, A, b, 'UniformOutput', false);
     
     flow = reshape(flow, [],1);
     flow = [flow{:}];
