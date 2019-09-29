@@ -1,43 +1,42 @@
-function lucas_kanade(image1, image2, sects)
+function flow =  opticFlow(im1, im2, sects)
+    
     if nargin == 2
         sects = 15;
     end
+    
     % get the image size and new sizes
-    im1 = im2double(rgb2gray(image1));
-    im2 = im2double(rgb2gray(image2));
     [h,w] = size(im1);
     h_adjust = (floor(h/sects)*sects);
     w_adjust = (floor(w/sects)*sects);
-
+    
+    % Resize the image into a windowble shape
+    offset_h = floor((h-h_adjust)/2);
+    offset_w = floor((w-w_adjust)/2);
+    
     im1 = im1(1:h_adjust, 1:w_adjust);
     im2 = im2(1:h_adjust, 1:w_adjust);
     
+    %Make windows with cells cause arrays dont seem to work
+    w1 = mat2cell(im1, repelem(sects, h_adjust/sects), repelem(sects, w_adjust/sects));
+    w2 = mat2cell(im2, repelem(sects, h_adjust/sects), repelem(sects, w_adjust/sects));
     
-
-    window1 = mat2cell(im1, repelem(sects, h_adjust/sects), repelem(sects, w_adjust/sects));
-    window2 = mat2cell(im2, repelem(sects, h_adjust/sects), repelem(sects, w_adjust/sects));
-    flow_h = zeros(h_adjust/sects,w_adjust/sects);
-    flow_w = zeros(h_adjust/sects,w_adjust/sects);
-    % get flow information for horizontal and vertical directions
-    for i = 1:h_adjust/sects
-        for j= 1:w_adjust/sects
-            v = solve_sys(window1{i,j},window2{i,j});
-            flow_h(i,j) = v(1);
-            flow_w(i,j) = v(2);
-        end
-    end
-    figure(1);
-    imshow(image1);
-    hold on;
-    quiver(sects*(1:h_adjust/sects),sects*(1:w_adjust/sects),flow_h,flow_w);    
-end
-
-
-
-
-function v = solve_sys(window1, window2)
-    [Ix, Iy] = imgradientxy(window1);
-    A = [Ix(:), Iy(:)];
-    b = window1(:) - window2(:);
-    v = inv(A' * A) * A'* b;
+    a1 = cellfun(@(w1) reshape(w1',[],1), w1, 'UniformOutput', false);
+    a2 = cellfun(@(w2) reshape(w2',[],1), w2, 'UniformOutput', false);
+    
+    b = cellfun(@(a2,a1) a2-a1, a2, a1, 'UniformOutput', false);
+    
+    % get the derivaties
+    [wgradx, wgrady] = cellfun(@imgradient, w1, 'UniformOutput', false);
+    
+    wgradx = cellfun(@(wgradx) reshape(wgradx',[],1), wgradx, 'UniformOutput', false);
+    wgrady = cellfun(@(wgrady) reshape(wgrady',[],1), wgrady, 'UniformOutput', false);
+    
+    %Construct A
+    A = cellfun(@(wgradx,wgrady) [wgradx, wgradx], wgradx, wgrady, 'UniformOutput', false);
+    
+    %Solve system of equations
+    flow = cellfun(@(A,b) inv(A'*A)*A'*-b, A, b, 'UniformOutput', false);
+    
+    flow = reshape(flow, [],1);
+    flow = [flow{:}];
 end

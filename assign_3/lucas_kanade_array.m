@@ -41,20 +41,20 @@ function flow =  opticFlow(im1, im2, sects)
     dy = dx';
     
     % Attempt 1
-%     Iy = conv2(im1, dy, 'same');
-%     Ix = conv2(im1, dx, 'same');
-%     Ix = reshape(Ix,sects,sects,[]);
-%     Iy = reshape(Iy,sects,sects,[]);
-%     
+    Iy = conv2(im1, dy, 'same');
+    Ix = conv2(im1, dx, 'same');
+    Ix = reshape(Ix,sects,sects,[]);
+    Iy = reshape(Iy,sects,sects,[]);
+     
 
-    %Attempt 2 works even less
-    Ix = zeros(size(window1));
-    Iy = zeros(size(window1));
-
-    for z = 1:1:size(window1,3)
-        Ix(:,:,z) = conv2(window1(:,:,z), dx, 'same');
-        Iy(:,:,z) = conv2(window1(:,:,z), dy, 'same');
-    end
+%     %Attempt 2 works even less
+%     Ix = zeros(size(window1));
+%     Iy = zeros(size(window1));
+% 
+%     for z = 1:1:size(window1,3)
+%         Ix(:,:,z) = conv2(window1(:,:,z), dx, 'same');
+%         Iy(:,:,z) = conv2(window1(:,:,z), dy, 'same');
+%     end
     
     Ix = reshape(Ix,[],1,size(Ix,3));
     Iy = reshape(Iy,[],1,size(Iy,3));    
