@@ -22,5 +22,7 @@ function demo_lucas_kanade()
     imshow(im1(1:h_ad,1:w_ad));
     hold on;
     quiver(reshape(x, [], 1), reshape(y, [], 1), flow(:, 1), flow(:, 2), 'color', [1, 1, 1]);
+    title('Lucas Kanade Optical Flow of a Sphere');
+    
 
 end
