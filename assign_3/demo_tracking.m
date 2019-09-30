@@ -10,4 +10,4 @@ for k = 1:numel(S)
     images(:,:,:,k) = I;
 end
 
-tracking(images);
+tracking(images,15);
