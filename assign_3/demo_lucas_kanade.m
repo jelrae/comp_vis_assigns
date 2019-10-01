@@ -10,6 +10,7 @@ function demo_lucas_kanade()
     flow = lucas_kanade(im1,im2,sects);
     flow = flow';
 
+    [h, w] = size(im1);
 
     num_instances = floor(h / sects)^2;
     h_ad = (floor(h/sects)*sects);
