@@ -1,4 +1,4 @@
-function flow =  opticFlow(im1, im2, sects)
+function flow =  lucas_kanade(im1, im2, sects)
     
     if nargin == 2
         sects = 15;

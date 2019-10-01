@@ -1,7 +1,14 @@
-function tracking(imgs, sects)
+function tracking_attempt(imgs, sects)
+    
+    videoObject = VideoWriter(sprintf('result_tracking/tracking1.avi'));
+    videoObject.FrameRate = 10;
+    open(videoObject);
+    time_inteval = 10;
     [h,w,~,count_images] = size(imgs);
     % detect interesting points
     [rows, cols, corners_1, Ix, Iy] = harris_corner_detector(imgs(:,:,:,1));
+    scaling = 5;
+    
     for i = 1:count_images-1
         
         img = im2double(rgb2gray(imgs(:,:,:,i)));
@@ -25,7 +32,7 @@ function tracking(imgs, sects)
         bad_point_uppery = find(corners(:,2)>(w-floor(sects/2)+1));
         corners(bad_point_uppery,:) = [];
         
-        flow = empty(size(corners,1),2);
+        flow = zeros(size(corners,1),2);
 
         rows = corners(:,1);
         %size(rows)
@@ -40,7 +47,7 @@ function tracking(imgs, sects)
             %if x_low>0 && y_low>0
             patch_1(:,:) = img(x_low:x_high, y_low:y_high);
             patch_2(:,:) = img2(x_low:x_high, y_low:y_high); 
-            flow(j,:) = opticFlow(patch_1, patch_2, 15);
+            flow(j,:) = lucas_kanade(patch_1, patch_2, 15);
             %end
         end    
          
@@ -52,14 +59,20 @@ function tracking(imgs, sects)
 %         end
         
         image = imgs(:,:,:,i);
-        fig = figure('visible','off');
+        fig = figure(1);
         imshow(image);
         hold on;
-        quiver(rows, cols, flow(:,1), flow(:,2);
-        cols = round((cols +(floor(sects/2).* flow_w)));
-        rows = round((rows +(floor(sects/2).* flow_h)));
+        hor = flow(:,1);
+        ver = flow(:,2);
+        quiver(cols, rows, hor, ver, 'color', [0, 0, 1]);
+        max_v = ;
+        max_h = ;
+        cols = round((cols +(scaling.*hor)));
+        rows = round((rows +(scaling.*ver)));
+        fr = getframe(fig);
+        writeVideo(videoObject, fr);
     end
- 
+    close(videoObject);
 end
 
 function v = solve_sys(window1, window2)

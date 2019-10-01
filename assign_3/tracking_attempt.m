@@ -62,11 +62,13 @@ function tracking_attempt(imgs, sects)
         fig = figure(1);
         imshow(image);
         hold on;
-        h = flow(:,1);
-        v = flow(:,2);
-        quiver(cols, rows, h, v, 'color', [0, 0, 1]);
-        cols = round((cols +(scaling.*h)));
-        rows = round((rows +(scaling.*v)));
+        hor = flow(:,1);
+        ver = flow(:,2);
+        quiver(cols, rows, hor, ver, 'color', [0, 0, 1]);
+        max_v = ;
+        max_h = ;
+        cols = round((cols +(scaling.*hor)));
+        rows = round((rows +(scaling.*ver)));
         fr = getframe(fig);
         writeVideo(videoObject, fr);
     end
