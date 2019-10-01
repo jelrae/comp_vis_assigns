@@ -1,6 +1,6 @@
-function tracking_attempt(imgs, sects)
+function tracking_attempt(name, imgs, sects)
     
-    output = VideoWriter(sprintf('result_tracking/tracking1.avi'));
+    output = VideoWriter(sprintf('result_tracking/%s.avi', name));
     output.FrameRate = 10;
     open(output);
     scaling = 10;
