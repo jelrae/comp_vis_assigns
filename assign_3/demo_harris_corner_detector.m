@@ -2,11 +2,14 @@ clear; close all;
 img_path = "person_toy/00000001.jpg";
 image = imread(img_path);
 %% plotting
-[res_rows, res_cols, res_cornerness, Ix, Iy] = harris_corner_detector(image);
+threshold = 0.05;
+[res_rows, res_cols, res_cornerness, Ix, Iy] = harris_corner_detector(image, threshold);
 disp(length(res_cornerness));
 figure(1);
-montage({Ix, Iy});
-title("Ix and Iy");
+subplot(121);
+imshow(Ix);
+subplot(122);
+imshow(Iy);
 
 figure(2);
 imshow(image);
