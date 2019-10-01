@@ -1,7 +1,7 @@
 function tracking(imgs, sects)
     [h,w,~,count_images] = size(imgs);
     % detect interesting points
-    [rows, cols, corners_1, Ix, Iy] = harris_corner_detector(imgs(:,:,:,1));
+    [rows, cols, corners_1, Ix, Iy] = harris_corner_detector(imgs(:,:,:,1), 0.05);
     for i = 1:count_images-1
 
         img = im2double(rgb2gray(imgs(:,:,:,i)));
