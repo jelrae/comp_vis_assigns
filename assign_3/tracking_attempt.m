@@ -1,13 +1,12 @@
 function tracking_attempt(imgs, sects)
     
-    videoObject = VideoWriter(sprintf('result_tracking/tracking1.avi'));
-    videoObject.FrameRate = 10;
-    open(videoObject);
-    time_inteval = 10;
+    output = VideoWriter(sprintf('result_tracking/tracking1.avi'));
+    output.FrameRate = 10;
+    open(output);
+    scaling = 10;
     [h,w,~,count_images] = size(imgs);
     % detect interesting points
     [rows, cols, corners_1, Ix, Iy] = harris_corner_detector(imgs(:,:,:,1));
-    scaling = 5;
     
     for i = 1:count_images-1
         
@@ -23,13 +22,13 @@ function tracking_attempt(imgs, sects)
         bad_point_lowerx = find(corners(:,1)<floor(sects/2)+1);
         corners(bad_point_lowerx,:) = [];
 
-        bad_point_upperx = find(corners(:,1)>(h-floor(sects/2)+1));
+        bad_point_upperx = find(corners(:,1)>(h-floor(sects/2)-1));
         corners(bad_point_upperx,:) = [];
 
         bad_point_lowery = find(corners(:,2)<floor(sects/2)+1);
         corners(bad_point_lowery,:) = [];
 
-        bad_point_uppery = find(corners(:,2)>(w-floor(sects/2)+1));
+        bad_point_uppery = find(corners(:,2)>(w-floor(sects/2)-1));
         corners(bad_point_uppery,:) = [];
         
         flow = zeros(size(corners,1),2);
@@ -65,14 +64,14 @@ function tracking_attempt(imgs, sects)
         hor = flow(:,1);
         ver = flow(:,2);
         quiver(cols, rows, hor, ver, 'color', [0, 0, 1]);
-        max_v = ;
-        max_h = ;
+        %[max_v,~] = max(abs(ver(:)));
+        %[max_h,~] = max(abs(hor(:)));
         cols = round((cols +(scaling.*hor)));
         rows = round((rows +(scaling.*ver)));
         fr = getframe(fig);
-        writeVideo(videoObject, fr);
+        writeVideo(output, fr);
     end
-    close(videoObject);
+    close(output);
 end
 
 function v = solve_sys(window1, window2)
