@@ -16,9 +16,6 @@ function demo_lucas_kanade()
     h_ad = (floor(h/sects)*sects);
     w_ad = (floor(w/sects)*sects);
     
-%     quiver((1:1:num_instances)',(1:1:num_instances)', flow(:,1), flow(:,2))
-    
-    %Friends code
 
     [x, y] = meshgrid(8:15:w_ad, 8:15:h_ad);
 
@@ -40,3 +37,4 @@ function demo_lucas_kanade()
     
 
 end
+
